@@ -106,7 +106,7 @@ if page == "Solve":
 
     st.subheader("Detected board")
     annotated = annotate_image(bgr, debug)
-    st.image(bgr_to_pil(annotated), use_container_width=True)
+    st.image(bgr_to_pil(annotated), width="stretch")
 
     if st.button("Solve"):
         with st.spinner("Solving..."):
@@ -149,7 +149,7 @@ elif page == "Templates":
             for col, name in zip(cols, row):
                 with col:
                     img = Image.open(TEMPLATES_DIR / f"{name}.png")
-                    st.image(img, caption=name, use_container_width=True)
+                    st.image(img, caption=name, width="stretch")
                     if st.button("Delete", key=f"del_{name}"):
                         (TEMPLATES_DIR / f"{name}.png").unlink(missing_ok=True)
                         st.rerun()

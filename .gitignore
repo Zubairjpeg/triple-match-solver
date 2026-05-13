@@ -1,0 +1,29 @@
+# Seed screenshots (private; only used locally for template extraction)
+seed_scrrenshot*.JPEG
+seed_screenshot*.png
+seed_screenshot*.jpg
+
+# Staging artifacts from template extraction
+staging/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# Streamlit secrets (never commit)
+.streamlit/secrets.toml
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
