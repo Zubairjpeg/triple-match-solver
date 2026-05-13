@@ -1,0 +1,37 @@
+# Triple Match 3D — Stage 7
+# Edit the tile names below to match your actual board.
+# Use . for empty cells.
+# overlap_radius: 0.9
+#
+# Tile names from the screenshot (use these exact strings):
+#   tomato, carrot, salmon, chicken, beef, pork, onion, corn, shrimp, egg, pepper
+#
+# TIP: Fill in LAYER 1 (bottom/most-blocked) first, then higher layers.
+# The solver reads layers bottom-up; higher-layer tiles block lower ones.
+
+LAYER 1
+.       pepper  pepper  pepper  pepper  .
+pepper  tomato  tomato  tomato  pepper  pepper
+beef    carrot  .       .       corn    beef
+beef    salmon  .       .       carrot  beef
+pork    .       chicken pork    .       tomato
+.       pork    beef    tomato  .       .
+
+LAYER 2
+.       .       tomato  .       .
+.       carrot  onion   pepper  .
+.       .       salmon  corn    .
+.       .       chicken carrot  .
+.       pork    beef    .       .
+
+LAYER 3
+.   .   onion   .   .
+.   .   salmon  .   .
+.   .   .       .   .
+
+# Side stacks (treat as a separate column — pick accessible side tiles manually)
+# Left stack:  shrimp (accessible), then more behind it
+# Right stack: egg (accessible), then more behind it
+# Add them as LAYER 1, Col 6 (right) / Col -1 (left) if you want solver to include them:
+# shrimp, 1, 0, -1
+# egg,    1, 0, 6

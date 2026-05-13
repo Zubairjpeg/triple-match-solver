@@ -1,0 +1,10 @@
+# Small realistic demo: 5 tile types × 3 copies each = 15 tiles, 2 layers
+# overlap_radius: 0.9
+
+LAYER 1
+tomato  carrot  salmon  beef
+beef    onion   onion   carrot
+salmon  tomato  beef    carrot
+
+LAYER 2
+.  salmon  onion  tomato
