@@ -15,9 +15,9 @@ from pathlib import Path
 from board import Tile, Board, GameState
 
 
-MATCH_THRESHOLD = 0.62
+MATCH_THRESHOLD = 0.55
 NMS_OVERLAP = 0.4
-SCALE_RANGE = (0.6, 0.75, 0.9, 1.0, 1.1, 1.25, 1.5)
+SCALE_RANGE = (0.35, 0.45, 0.55, 0.65, 0.75, 0.85, 0.95, 1.05, 1.2, 1.4, 1.7, 2.0)
 
 
 def load_templates(templates_dir: Path) -> dict:

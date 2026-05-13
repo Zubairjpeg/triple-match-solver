@@ -90,11 +90,42 @@ if page == "Solve":
     pil_img = Image.open(uploaded).convert("RGB")
     bgr = pil_to_bgr(pil_img)
 
+    debug_mode = st.sidebar.checkbox("Debug mode", value=False,
+                                      help="Show per-template top scores to diagnose detection failures.")
+
     with st.spinner("Detecting tiles..."):
         state, debug = detect_board(bgr, TEMPLATES_DIR)
 
     counts = state.board.type_counts()
     st.write(f"**Detected:** {len(state.board.tiles)} tiles across {len(counts)} types")
+
+    if debug_mode:
+        import cv2 as _cv2
+        from cv_detector import load_templates, MATCH_THRESHOLD, SCALE_RANGE
+        gray = _cv2.cvtColor(bgr, _cv2.COLOR_BGR2GRAY)
+        tmpls = load_templates(TEMPLATES_DIR)
+        st.write(f"Image: {bgr.shape[1]} x {bgr.shape[0]} px")
+        st.write(f"Threshold: {MATCH_THRESHOLD}, scales: {SCALE_RANGE}")
+        rows = []
+        for name, tmpl in tmpls.items():
+            best_score = 0.0
+            best_scale = 0
+            th, tw = tmpl.shape
+            for scale in SCALE_RANGE:
+                sw, sh = int(tw * scale), int(th * scale)
+                if sw < 10 or sh < 10 or sw > gray.shape[1] or sh > gray.shape[0]:
+                    continue
+                scaled = _cv2.resize(tmpl, (sw, sh), interpolation=_cv2.INTER_AREA)
+                result = _cv2.matchTemplate(gray, scaled, _cv2.TM_CCOEFF_NORMED)
+                _, mx, _, _ = _cv2.minMaxLoc(result)
+                if mx > best_score:
+                    best_score = mx
+                    best_scale = scale
+            rows.append({"template": name, "best_score": round(best_score, 3),
+                         "best_scale": best_scale, "tmpl_size": f"{tw}x{th}"})
+        rows.sort(key=lambda r: r["best_score"], reverse=True)
+        st.write("**Top match score per template** (need ≥ threshold to detect):")
+        st.dataframe(rows, width="stretch")
 
     bad_counts = {k: v for k, v in counts.items() if v % 3 != 0}
     if bad_counts:
